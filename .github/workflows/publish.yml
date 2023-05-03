@@ -1,0 +1,21 @@
+name: 'Publish fastapi-nextauth-jwt to pypi'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Setup flit
+        run: python3 -m pip install flit
+
+      - name: Publish
+        run: flit publish
