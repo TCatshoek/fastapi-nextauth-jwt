@@ -14,3 +14,6 @@ dependencies = [
     "cryptography",
     "python-jose[cryptography]"
 ]
+
+[project.urls]
+Home = "https://github.com/TCatshoek/fastapi-nextauth-jwt"
