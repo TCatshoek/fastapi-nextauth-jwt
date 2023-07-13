@@ -1,7 +1,10 @@
 name: 'Publish fastapi-nextauth-jwt to pypi'
 
 on:
-  [push]
+  pull_request:
+    branches:
+      - '*'
+  push:
 
 jobs:
   test:
@@ -16,11 +19,18 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install .
+          pip install . ".[test]"
 
       - name: run pytest
         run: |
-          pytest
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=app tests/ | tee pytest-coverage.txt
+
+      - name: Pytest comment
+        if: github.event_name == 'pull_request'
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
 
   publish:
     runs-on: ubuntu-latest
