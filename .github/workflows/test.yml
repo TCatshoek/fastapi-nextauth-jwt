@@ -1,9 +1,9 @@
 name: 'Publish fastapi-nextauth-jwt to pypi'
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - '*'
 
 jobs:
   test:
@@ -24,24 +24,8 @@ jobs:
         run: |
           pytest --junitxml=pytest.xml --cov=fastapi_nextauth_jwt tests/ | tee pytest-coverage.txt
 
-
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v4
+      - name: Pytest comment
+        uses: MishaKav/pytest-coverage-comment@main
         with:
-          python-version: '3.11'
-
-      - name: Setup flit
-        run: python3 -m pip install flit
-
-      - name: Build package
-        run: flit build
-
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
