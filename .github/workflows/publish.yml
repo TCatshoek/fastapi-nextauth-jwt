@@ -1,9 +1,6 @@
 name: 'Run tests and publish fastapi-nextauth-jwt to pypi'
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   test:
