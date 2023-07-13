@@ -1,11 +1,30 @@
 name: 'Publish fastapi-nextauth-jwt to pypi'
 
 on:
-  workflow_dispatch:
+  [push]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+
+      - name: run pytest
+        run: |
+          pytest
+
   publish:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     permissions:
       id-token: write
     steps:
@@ -14,7 +33,7 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Setup flit
         run: python3 -m pip install flit
