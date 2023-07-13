@@ -32,15 +32,16 @@ expected_jwt = {'email': 'test@test.nl',
 
 
 def test_no_csrf():
-    response = client.get("/", cookies=cookies)
+    client.cookies = cookies
+    response = client.get("/")
 
     assert response.status_code == 200
     assert response.json() == expected_jwt
 
 
 def test_csrf():
+    client.cookies = cookies_w_csrf
     response = client.post("/csrf",
-                           cookies=cookies_w_csrf,
                            headers={
                                "X-XSRF-Token": "89f032cc1b6e570b4c5631e1ecae0541e2c6edd42ee47ab143cc55294b4486f3"
                            })
@@ -51,18 +52,21 @@ def test_csrf():
 
 def test_csrf_missing_token():
     with pytest.raises(MissingTokenError) as exc_info:
-        client.post("/csrf", cookies=cookies)
+        client.cookies = cookies
+        client.post("/csrf")
         assert exc_info.value.message == "Missing CSRF token: next-auth.csrf-token"
 
 
 def test_csrf_missing_header():
     with pytest.raises(MissingTokenError) as exc_info:
-        client.post("/csrf", cookies=cookies_w_csrf)
+        client.cookies = cookies_w_csrf
+        client.post("/csrf")
         assert exc_info.value.message == "Missing CSRF header: X-XSRF-Token"
 
 
 def test_csrf_no_csrf_method():
-    response = client.get("/csrf", cookies=cookies)
+    client.cookies = cookies
+    response = client.get("/csrf")
 
     assert response.status_code == 200
     assert response.json() == expected_jwt
@@ -70,5 +74,6 @@ def test_csrf_no_csrf_method():
 
 def test_invalid_jwt():
     with pytest.raises(InvalidTokenError) as exc_info:
-        client.get("/", cookies=cookies_invalid)
+        client.cookies = cookies_invalid
+        client.get("/")
         assert exc_info.value.message == "Invalid JWT format"
