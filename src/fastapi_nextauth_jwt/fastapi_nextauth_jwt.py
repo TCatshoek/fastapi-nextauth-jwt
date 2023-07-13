@@ -32,7 +32,7 @@ class NextAuthJWT:
         Initializes a new instance of the NextAuthJWT class.
 
         Args:
-            secret (str, optional): The secret used for key derivation.
+            secret (str): The secret used for key derivation.
 
             cookie_name (str, optional): The name of the session cookie. Defaults to "__Secure-next-auth.session-token"
              if using secure cookies, otherwise "next-auth.session-token"
