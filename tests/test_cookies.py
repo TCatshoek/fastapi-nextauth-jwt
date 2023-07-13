@@ -1,6 +1,6 @@
 import pytest
-from cookies import extract_token
-from exceptions import MissingTokenError
+from fastapi_nextauth_jwt.cookies import extract_token
+from fastapi_nextauth_jwt.exceptions import MissingTokenError
 
 
 def test_extract_cookie_single():

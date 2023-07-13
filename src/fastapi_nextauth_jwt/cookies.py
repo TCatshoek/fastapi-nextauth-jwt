@@ -1,5 +1,5 @@
 from typing import Dict
-from exceptions import MissingTokenError
+from fastapi_nextauth_jwt.exceptions import MissingTokenError
 
 
 def extract_token(cookies: Dict[str, str], cookie_name: str):

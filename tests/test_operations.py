@@ -1,4 +1,4 @@
-import operations
+from fastapi_nextauth_jwt import operations
 from cryptography.hazmat.primitives import hashes
 
 

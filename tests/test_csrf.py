@@ -1,7 +1,7 @@
 import pytest
 
-from csrf import extract_csrf_info, validate_csrf_info
-from exceptions import InvalidTokenError
+from fastapi_nextauth_jwt.csrf import extract_csrf_info, validate_csrf_info
+from fastapi_nextauth_jwt.exceptions import InvalidTokenError
 
 
 def test_extract_csrf():

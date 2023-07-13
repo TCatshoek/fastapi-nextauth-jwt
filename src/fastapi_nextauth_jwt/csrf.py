@@ -1,6 +1,6 @@
 import urllib.parse
 from cryptography.hazmat.primitives import hashes
-from exceptions import InvalidTokenError
+from fastapi_nextauth_jwt.exceptions import InvalidTokenError
 
 
 def extract_csrf_info(csrf_string: str) -> [str, str]:
