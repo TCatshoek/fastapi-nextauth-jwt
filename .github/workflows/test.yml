@@ -1,4 +1,4 @@
-name: 'Publish fastapi-nextauth-jwt to pypi'
+name: 'Run pytest'
 
 on:
   pull_request:

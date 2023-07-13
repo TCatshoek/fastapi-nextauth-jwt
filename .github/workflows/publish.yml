@@ -1,4 +1,4 @@
-name: 'Publish fastapi-nextauth-jwt to pypi'
+name: 'Run tests and publish fastapi-nextauth-jwt to pypi'
 
 on:
   push:
