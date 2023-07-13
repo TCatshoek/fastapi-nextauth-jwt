@@ -15,5 +15,12 @@ dependencies = [
     "python-jose[cryptography]"
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest >=2.7.3",
+    "pytest-cov",
+    "httpx"
+]
+
 [project.urls]
 Home = "https://github.com/TCatshoek/fastapi-nextauth-jwt"
