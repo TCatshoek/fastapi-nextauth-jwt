@@ -43,7 +43,3 @@ If this is not set, this will looks at the ENV environment variable. If this is 
 
 You should also set the `NEXTAUTH_URL` environment variable, as it is used to determine
 whether or not secure cookies are being used. Or you can set the cookie names manually.
-
-# TODO
-
-[ ] Add check to see if token has expired or not

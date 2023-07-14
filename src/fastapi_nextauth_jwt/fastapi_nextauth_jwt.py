@@ -10,7 +10,7 @@ from jose import jwe
 from jose.exceptions import JWEError
 from cryptography.hazmat.primitives import hashes
 
-from fastapi_nextauth_jwt.operations import derive_key
+from fastapi_nextauth_jwt.operations import derive_key, check_expiry
 from fastapi_nextauth_jwt.cookies import extract_token
 from fastapi_nextauth_jwt.csrf import extract_csrf_info, validate_csrf_info
 from fastapi_nextauth_jwt.exceptions import InvalidTokenError, MissingTokenError, CSRFMismatchError
@@ -27,7 +27,8 @@ class NextAuthJWT:
                  salt: bytes = b"",
                  hash_algorithm: Any = hashes.SHA256(),
                  csrf_prevention_enabled: bool = None,
-                 csrf_methods: Set[str] = None):
+                 csrf_methods: Set[str] = None,
+                 check_expiry: bool = True):
         """
         Initializes a new instance of the NextAuthJWT class.
 
@@ -53,6 +54,8 @@ class NextAuthJWT:
 
             csrf_methods (Set[str], optional): The HTTP methods that require CSRF protection.
              Defaults to {'POST', 'PUT', 'PATCH', 'DELETE'}.
+
+             check_expiry (bool, optional): Whether or not to check the token for expiry. Defaults to True
 
         Example:
             >>> auth = NextAuthJWT(secret=os.getenv("NEXTAUTH_SECRET"))
@@ -93,6 +96,8 @@ class NextAuthJWT:
         else:
             self.csrf_methods = csrf_methods
 
+        self.check_expiry = check_expiry
+
     def __call__(self, req: Request = None):
         encrypted_token = extract_token(req.cookies, self.cookie_name)
 
@@ -101,10 +106,17 @@ class NextAuthJWT:
 
         try:
             decrypted_token_string = jwe.decrypt(encrypted_token, self.key)
-            return json.loads(decrypted_token_string)
+            token = json.loads(decrypted_token_string)
         except (JWEError, JSONDecodeError) as e:
             print(e)
             raise InvalidTokenError(status_code=401, message="Invalid JWT format")
+
+        if self.check_expiry:
+            if "exp" not in token:
+                raise InvalidTokenError(status_code=401, message="Invalid JWT format, missing exp")
+            check_expiry(token['exp'])
+
+        return token
 
     def check_csrf_token(self, req: Request):
         if req.method not in self.csrf_methods:
@@ -127,3 +139,4 @@ class NextAuthJWT:
 
         if csrf_header_token != csrf_cookie_token:
             raise CSRFMismatchError(status_code=401, message="CSRF Token mismatch")
+

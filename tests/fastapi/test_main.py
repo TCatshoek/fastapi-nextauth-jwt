@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from fastapi_nextauth_jwt.exceptions import MissingTokenError, InvalidTokenError
+from fastapi_nextauth_jwt.exceptions import MissingTokenError, InvalidTokenError, TokenExpiredException
 from main import app
 
 client = TestClient(app)
@@ -29,6 +29,12 @@ expected_jwt = {'email': 'test@test.nl',
                 'iat': 1689273309,
                 'exp': 1691865309,
                 'jti': '2b8540dd-4d7c-400f-ad65-7d112ac5a07a'}
+
+
+@pytest.fixture(autouse=True)
+def patch_current_time(monkeypatch):
+    # Monkeypatch the deadline so the tests don't rely on the current time
+    monkeypatch.setattr("fastapi_nextauth_jwt.operations.check_expiry.__defaults__", (1691865310,))
 
 
 def test_no_csrf():
@@ -77,3 +83,13 @@ def test_invalid_jwt():
         client.cookies = cookies_invalid
         client.get("/")
         assert exc_info.value.message == "Invalid JWT format"
+
+
+def test_expiry(monkeypatch):
+    # In this case, we patch the deadline to be before token expiration
+    monkeypatch.setattr("fastapi_nextauth_jwt.operations.check_expiry.__defaults__", (1691865300,))
+
+    with pytest.raises(TokenExpiredException) as exc_info:
+        client.cookies = cookies
+        client.get("/")
+        assert exc_info.value.message == "Token Expired"
