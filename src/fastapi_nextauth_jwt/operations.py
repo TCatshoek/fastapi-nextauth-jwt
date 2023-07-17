@@ -14,8 +14,8 @@ def derive_key(secret: str, length: int, salt: bytes, algorithm, context: bytes)
     return hkdf.derive(bytes(secret, "ascii"))
 
 
-def check_expiry(exp: int, deadline: int = None):
-    if deadline is None:
-        deadline = time.time()
-    if exp > deadline:
+def check_expiry(exp: int, cur_time: int = None):
+    if cur_time is None:
+        cur_time = time.time()
+    if exp < cur_time:
         raise TokenExpiredException(403, "Token Expired")
