@@ -11,4 +11,4 @@ JWT = NextAuthJWT(
 
 @app.get("/")
 async def return_jwt(jwt: Annotated[dict, Depends(JWT)]):
-    return "hello from fastapi!"
+    return {"message": f"Hi {jwt['name']}. Greetings from fastapi!"}
