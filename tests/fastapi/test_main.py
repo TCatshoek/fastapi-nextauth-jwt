@@ -33,8 +33,8 @@ expected_jwt = {'email': 'test@test.nl',
 
 @pytest.fixture(autouse=True)
 def patch_current_time(monkeypatch):
-    # Monkeypatch the deadline so the tests don't rely on the current time
-    monkeypatch.setattr("fastapi_nextauth_jwt.operations.check_expiry.__defaults__", (1691865310,))
+    # Monkeypatch the current time so tests don't depend on it
+    monkeypatch.setattr("fastapi_nextauth_jwt.operations.check_expiry.__defaults__", (1691865300,))
 
 
 def test_no_csrf():
@@ -86,8 +86,8 @@ def test_invalid_jwt():
 
 
 def test_expiry(monkeypatch):
-    # In this case, we patch the deadline to be before token expiration
-    monkeypatch.setattr("fastapi_nextauth_jwt.operations.check_expiry.__defaults__", (1691865300,))
+    # In this case, we patch the current time to be after the token expiry time
+    monkeypatch.setattr("fastapi_nextauth_jwt.operations.check_expiry.__defaults__", (1691865320,))
 
     with pytest.raises(TokenExpiredException) as exc_info:
         client.cookies = cookies

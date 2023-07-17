@@ -24,3 +24,11 @@ test = [
 
 [project.urls]
 Home = "https://github.com/TCatshoek/fastapi-nextauth-jwt"
+
+[tool.flit.sdist]
+exclude = [
+    "tests/",
+    ".github/",
+    ".examples/",
+    ".gitignore"
+]
