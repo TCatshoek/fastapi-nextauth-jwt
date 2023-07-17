@@ -6,13 +6,13 @@ export const authOptions = {
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
-                username: { label: "Username", type: "text", placeholder: "jsmith" },
-                password: { label: "Password", type: "password" }
+                username: {label: "Username", type: "text", placeholder: "jsmith"},
+                password: {label: "Password", type: "password"}
             },
             async authorize(credentials, req) {
                 if (credentials) {
                     console.log("Credentials:", credentials)
-                    return { id: 1, name: credentials.username, email: "test@test.nl"}
+                    return {id: 1, name: credentials.username, email: "test@test.nl"}
                 }
                 // Return null if user data could not be retrieved
                 return null
