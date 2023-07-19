@@ -1,4 +1,5 @@
 import json
+import warnings
 from json import JSONDecodeError
 
 import os
@@ -18,7 +19,7 @@ from fastapi_nextauth_jwt.exceptions import InvalidTokenError, MissingTokenError
 
 class NextAuthJWT:
     def __init__(self,
-                 secret: str,
+                 secret: str = None,
                  cookie_name: str = None,
                  secure_cookie: bool = None,
                  csrf_cookie_name: str = None,
@@ -33,7 +34,7 @@ class NextAuthJWT:
         Initializes a new instance of the NextAuthJWT class.
 
         Args:
-            secret (str): The secret used for key derivation.
+            secret (str): The secret used for key derivation. If not set, will be obtained from NEXTAUTH_SECRET env var.
 
             cookie_name (str, optional): The name of the session cookie. Defaults to "__Secure-next-auth.session-token"
              if using secure cookies, otherwise "next-auth.session-token"
@@ -61,9 +62,18 @@ class NextAuthJWT:
             >>> auth = NextAuthJWT(secret=os.getenv("NEXTAUTH_SECRET"))
         """
 
-        self.secret = secret
+        if secret is not None:
+            self.secret = secret
+        else:
+            env_secret = os.getenv("NEXTAUTH_SECRET")
+            if env_secret is None:
+                raise ValueError("Secret not set")
+            self.secret = env_secret
 
         if secure_cookie is None:
+            nextauth_url = os.getenv("NEXTAUTH_URL")
+            if nextauth_url is None:
+                warnings.warn("NEXTAUTH_URL not set", RuntimeWarning)
             secure_cookie = os.getenv("NEXTAUTH_URL", "").startswith("https://")
 
         if cookie_name is None:
@@ -79,7 +89,7 @@ class NextAuthJWT:
         self.csrf_header_name = csrf_header_name
 
         self.key = derive_key(
-            secret=secret,
+            secret=self.secret,
             length=32,
             salt=salt,
             algorithm=hash_algorithm,
@@ -139,4 +149,3 @@ class NextAuthJWT:
 
         if csrf_header_token != csrf_cookie_token:
             raise CSRFMismatchError(status_code=401, message="CSRF Token mismatch")
-

@@ -36,10 +36,12 @@ async def return_jwt(jwt: Annotated[dict, Depends(JWT)]):
 ```
 
 There are a few configuration options available in the NextAuthJWT constructor, but the most important one is `secret`,
-which should be equivalent to `NEXTAUTH_SECRET` on the Next.js side. 
+which should be equivalent to `NEXTAUTH_SECRET` on the Next.js side. A real application would obviously not hardcode the secret like this,
+but rely on the `NEXTAUTH_SECRET` env var.
 
 It is also possible to enable or disable CSRF protection using `csrf_prevention_enabled`. 
 If this is not set, this will looks at the ENV environment variable. If this is `dev` then CSRF protection will be disabled.
+It is also possible to customize the HTTP verbs to which CSRF protection is applied.
 
 You should also set the `NEXTAUTH_URL` environment variable, as it is used to determine
 whether or not secure cookies are being used. Or you can set the cookie names manually.
