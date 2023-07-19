@@ -1,0 +1,11 @@
+services:
+  fastapi:
+    build: ./fastapi
+    network_mode: "host"
+    volumes:
+      - ./fastapi:/code
+  nextjs:
+    build: ./nextjs
+    network_mode: "host"
+    volumes:
+      - ./nextjs:/app

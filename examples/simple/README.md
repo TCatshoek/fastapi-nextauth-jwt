@@ -8,7 +8,14 @@ to direct requests starting with `/fastapi` to the FastAPI backend.
 
 ## Setup
 
-### FastAPI
+### With docker compose:
+```shell
+docker-compose up
+```
+
+### Without docker:
+
+#### FastAPI
 ```shell
 cd fastapi
 python -m venv venv
@@ -17,7 +24,7 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-### Next.js
+#### Next.js
 ```shell
 cd nextjs
 npm install
