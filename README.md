@@ -45,7 +45,7 @@ You should also set the `NEXTAUTH_URL` environment variable, as it is used to de
 whether or not secure cookies are being used. Or you can set the cookie names manually.
 
 ## Examples
-A simple example is available in the examples folder. It uses Next.js URL rewrites to direct
+A [simple example](https://github.com/TCatshoek/fastapi-nextauth-jwt/tree/main/examples/simple) is available in the examples folder. It uses Next.js URL rewrites to direct
 requests to FastAPI. This is just one way to do it, putting both the backend and frontend
 behind something like nginx would also be a good strategy. As long as the cookies can make it to FastAPI
 you should be good to go!
