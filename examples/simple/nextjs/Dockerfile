@@ -1,14 +1,13 @@
-# syntax=docker/dockerfile:1.4
 FROM node:18-alpine
 
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies
-COPY --link package.json package-lock.json* ./
+COPY package.json package-lock.json* ./
 RUN npm ci
 
-COPY --link . ./
+COPY . ./
 
 EXPOSE 3000
 
