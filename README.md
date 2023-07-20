@@ -8,15 +8,9 @@ in the frontend.
 Besides JWT decryption and validation, NextAuth compatible cross-site request forgery (CSRF) protection is also implemented.
 
 # Installation
-General usage:
 ```shell
 pip install fastapi-nextauth-jwt
 ```
-Development:
-```shell
-pip install "fastapi-nextauth-jwt[test]"
-```
-
 # Usage
 
 ```python

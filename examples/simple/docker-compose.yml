@@ -9,3 +9,7 @@ services:
     network_mode: "host"
     volumes:
       - ./nextjs:/app
+      - nodemodules:/app/node_modules
+
+volumes:
+  nodemodules: {}
