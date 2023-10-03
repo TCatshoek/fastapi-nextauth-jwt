@@ -11,7 +11,7 @@ export const authOptions = {
             },
             async authorize(credentials, req) {
                 if (credentials) {
-                    return {id: 1, name: credentials.username, email: "test@test.nl"}
+                    return {id: "1", name: credentials.username, email: "test@test.nl"}
                 }
                 // Return null if user data could not be retrieved
                 return null
