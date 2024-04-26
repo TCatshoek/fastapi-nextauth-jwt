@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from fastapi_nextauth_jwt.exceptions import MissingTokenError, InvalidTokenError, TokenExpiredException
-from main import app
+from v4 import app
 
 client = TestClient(app)
 

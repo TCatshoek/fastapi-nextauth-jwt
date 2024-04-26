@@ -6,13 +6,13 @@ from fastapi_nextauth_jwt import NextAuthJWT
 app = FastAPI()
 
 JWT = NextAuthJWT(
-    secret="6dDnFiDpUlKlbJciCusuFKNYmcf4WpIigldzX/Wb/FA=",
-    csrf_prevention_enabled=False
+    secret="y0uR_SuP3r_s3cr37_$3cr3t",
+    csrf_prevention_enabled=False,
 )
 
 JWTwCSRF = NextAuthJWT(
-    secret="6dDnFiDpUlKlbJciCusuFKNYmcf4WpIigldzX/Wb/FA=",
-    csrf_prevention_enabled=True
+    secret="y0uR_SuP3r_s3cr37_$3cr3t",
+    csrf_prevention_enabled=True,
 )
 
 

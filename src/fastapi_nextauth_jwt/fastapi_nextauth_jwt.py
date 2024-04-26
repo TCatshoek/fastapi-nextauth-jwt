@@ -1,9 +1,11 @@
 import json
+import typing
 import warnings
+from functools import partial
 from json import JSONDecodeError
 
 import os
-from typing import Set, Any
+from typing import Set, Any, Literal, List
 
 from starlette.requests import Request
 
@@ -14,7 +16,11 @@ from cryptography.hazmat.primitives import hashes
 from fastapi_nextauth_jwt.operations import derive_key, check_expiry
 from fastapi_nextauth_jwt.cookies import extract_token
 from fastapi_nextauth_jwt.csrf import extract_csrf_info, validate_csrf_info
-from fastapi_nextauth_jwt.exceptions import InvalidTokenError, MissingTokenError, CSRFMismatchError
+from fastapi_nextauth_jwt.exceptions import InvalidTokenError, MissingTokenError, CSRFMismatchError, \
+    UnsupportedEncryptionAlgorithmException
+
+EncAlgs = Literal["A256CBC-HS512", "A256GCM"]
+_supported_encryption_algs = list(typing.get_args(EncAlgs))
 
 
 class NextAuthJWT:
@@ -24,9 +30,11 @@ class NextAuthJWT:
                  secure_cookie: bool = None,
                  csrf_cookie_name: str = None,
                  csrf_header_name: str = "X-XSRF-Token",
-                 info: bytes = b"NextAuth.js Generated Encryption Key",
-                 salt: bytes = b"",
+                 info: bytes = b"Auth.js Generated Encryption Key",
+                 salt: typing.Union[bytes, None] = None,
+                 auto_append_salt: bool = True,
                  hash_algorithm: Any = hashes.SHA256(),
+                 encryption_algorithm: EncAlgs = "A256CBC-HS512",
                  csrf_prevention_enabled: bool = None,
                  csrf_methods: Set[str] = None,
                  check_expiry: bool = True):
@@ -77,23 +85,33 @@ class NextAuthJWT:
             secure_cookie = os.getenv("NEXTAUTH_URL", "").startswith("https://")
 
         if cookie_name is None:
-            self.cookie_name = "__Secure-next-auth.session-token" if secure_cookie else "next-auth.session-token"
+            self.cookie_name = "__Secure-authjs.session-token" if secure_cookie else "authjs.session-token"
         else:
             self.cookie_name = cookie_name
 
         if csrf_cookie_name is None:
-            self.csrf_cookie_name = "__Host-next-auth.csrf-token" if secure_cookie else "next-auth.csrf-token"
+            self.csrf_cookie_name = "__Host-authjs.csrf-token" if secure_cookie else "authjs.csrf-token"
         else:
             self.csrf_cookie_name = csrf_cookie_name
 
+        if salt is None:
+            salt = bytes(self.cookie_name, "ascii")
+
         self.csrf_header_name = csrf_header_name
+
+        if encryption_algorithm not in _supported_encryption_algs:
+            raise UnsupportedEncryptionAlgorithmException(status_code=500, message=encryption_algorithm)
+
+        self.encryption_algorithm = encryption_algorithm
+
+        key_length = 64 if self.encryption_algorithm == "A256CBC-HS512" else 32
 
         self.key = derive_key(
             secret=self.secret,
-            length=32,
+            length=key_length,
             salt=salt,
             algorithm=hash_algorithm,
-            context=info
+            context=info + b" (" + salt + b")" if auto_append_salt else info
         )
 
         if csrf_prevention_enabled is None:
@@ -149,3 +167,18 @@ class NextAuthJWT:
 
         if csrf_header_token != csrf_cookie_token:
             raise CSRFMismatchError(status_code=401, message="CSRF Token mismatch")
+
+
+NextAuthJWTV4 = partial(
+    NextAuthJWT,
+    info=b"NextAuth.js Generated Encryption Key",
+    salt=b"",
+    auto_append_salt=False,
+    encryption_algorithm="A256GCM",
+    cookie_name="__Secure-next-auth.session-token"\
+        if os.getenv("NEXTAUTH_URL", "").startswith("https://")\
+        else "next-auth.session-token",
+    csrf_cookie_name="__Host-next-auth.csrf-token"\
+        if os.getenv("NEXTAUTH_URL", "").startswith("https://")\
+        else "next-auth.csrf-token"
+)
