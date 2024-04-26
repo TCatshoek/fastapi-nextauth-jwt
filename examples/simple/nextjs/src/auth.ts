@@ -19,11 +19,4 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         })
     ],
     secret: "y0uR_SuP3r_s3cr37_$3cr3t",
-    callbacks: {
-        jwt({ token, user}) {
-            console.log("token:", token)
-            console.log("user:", user)
-            return token
-        }
-    }
 })
