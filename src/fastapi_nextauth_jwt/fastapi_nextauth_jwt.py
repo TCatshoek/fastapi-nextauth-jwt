@@ -169,7 +169,7 @@ class NextAuthJWT:
             raise CSRFMismatchError(status_code=401, message="CSRF Token mismatch")
 
 
-NextAuthJWTV4 = partial(
+NextAuthJWTv4 = partial(
     NextAuthJWT,
     info=b"NextAuth.js Generated Encryption Key",
     salt=b"",

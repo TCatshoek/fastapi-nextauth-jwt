@@ -5,4 +5,4 @@ for use in nextjs/nextauth and fastapi mixed projects
 
 __version__ = "2.0.0"
 
-from fastapi_nextauth_jwt.fastapi_nextauth_jwt import NextAuthJWT, NextAuthJWTV4
+from fastapi_nextauth_jwt.fastapi_nextauth_jwt import NextAuthJWT, NextAuthJWTv4
