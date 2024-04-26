@@ -1,6 +1,8 @@
 services:
   fastapi:
-    build: ./fastapi
+    build:
+      context: ../../
+      dockerfile: examples/simple/fastapi/Dockerfile
     network_mode: "host"
     volumes:
       - ./fastapi:/code

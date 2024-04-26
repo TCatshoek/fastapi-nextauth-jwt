@@ -1,18 +1,18 @@
 from typing import Annotated
 
 from fastapi import FastAPI, Depends
-from fastapi_nextauth_jwt import NextAuthJWT
+from fastapi_nextauth_jwt import NextAuthJWTv4
 
 app = FastAPI()
 
-JWT = NextAuthJWT(
+JWT = NextAuthJWTv4(
     secret="6dDnFiDpUlKlbJciCusuFKNYmcf4WpIigldzX/Wb/FA=",
-    csrf_prevention_enabled=False
+    csrf_prevention_enabled=False,
 )
 
-JWTwCSRF = NextAuthJWT(
+JWTwCSRF = NextAuthJWTv4(
     secret="6dDnFiDpUlKlbJciCusuFKNYmcf4WpIigldzX/Wb/FA=",
-    csrf_prevention_enabled=True
+    csrf_prevention_enabled=True,
 )
 
 
