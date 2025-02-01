@@ -6,3 +6,10 @@ for use in nextjs/nextauth and fastapi mixed projects
 __version__ = "2.0.0"
 
 from fastapi_nextauth_jwt.fastapi_nextauth_jwt import NextAuthJWT, NextAuthJWTv4
+from fastapi_nextauth_jwt.logger import get_logger
+
+__all__ = [
+    "NextAuthJWT",
+    "NextAuthJWTv4",
+    "get_logger",
+]
