@@ -140,6 +140,3 @@ You can also place both the backend and frontend behind a reverse proxy like ngi
 - `NEXTAUTH_SECRET`: The secret key used for JWT operations (required)
 - `NEXTAUTH_URL`: The URL of your application (affects secure cookie settings)
 - `ENV`: Set to `"dev"` to disable CSRF protection in development
-
-
-[![Star History Chart](https://api.star-history.com/svg?repos=TCatshoek/fastapi-nextauth-jwt&type=Date)](https://star-history.com/#TCatshoek/fastapi-nextauth-jwt&Date)
