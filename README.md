@@ -55,7 +55,7 @@ async def return_jwt(jwt: Annotated[dict, Depends(JWT)]):
 
 ### Security Options
 
-- **csrf_prevention_enabled** (bool): Toggle CSRF protection
+- **csrf_prevention_enabled** (bool): Enable CSRF protection
   - Defaults to `False` in development (`ENV=dev`), `True` otherwise
 
 - **csrf_methods** (Set[str]): HTTP methods requiring CSRF protection
