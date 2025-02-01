@@ -1,6 +1,12 @@
 from typing import Annotated
 from fastapi import FastAPI, Depends
 from fastapi_nextauth_jwt import NextAuthJWT
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 
 app = FastAPI()
 
