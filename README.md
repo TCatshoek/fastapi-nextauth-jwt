@@ -11,7 +11,7 @@ This project provides a FastAPI dependency for decrypting and validating JWTs ge
 > Using Auth.js with frameworks other than Next.js may work but has not been tested
 
 > [!IMPORTANT]
-> NextAuth.js has been renamed to Auth.js, and the default cookie names have changed to reflect this (e.g., from `next-auth.csrf-token` to `authjs.csrf-token`). You'll need to update your cookie name configuration accordingly if you're using the latest version of Auth.js.
+> From version 2.0.0, and the default cookie names have changed (like authjs.session-token). You'll need to update your cookie name configuration accordingly if you're using the latest version of Auth.js.
 
 ## Features
 
