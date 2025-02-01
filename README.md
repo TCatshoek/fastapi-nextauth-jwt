@@ -79,8 +79,6 @@ async def return_jwt_post(jwt: Annotated[dict, Depends(JWT)]):
 - **csrf_cookie_name** (str): CSRF token cookie name
   - Default: `"__Host-next-auth.csrf-token"` (when secure_cookie is True)
   - Default: `"next-auth.csrf-token"` (when secure_cookie is False)
-  - For Auth.js (latest), use: `"__Host-authjs.csrf-token"` (when secure_cookie is True)
-
 > [!TIP]
 > If you're using the latest version of Auth.js, here's the recommended configuration:
 > ```python
