@@ -61,7 +61,7 @@ async def return_jwt_post(jwt: Annotated[dict, Depends(JWT)]):
 ### Security Options
 
 - **csrf_prevention_enabled** (bool): Toggle CSRF protection
-  - Defaults to `True` in development (`ENV=dev`), `False` otherwise
+  - Defaults to `False` in development (`ENV=dev`), `True` otherwise
 
 - **csrf_methods** (Set[str]): HTTP methods requiring CSRF protection
   - Default: `{'POST', 'PUT', 'PATCH', 'DELETE'}`
