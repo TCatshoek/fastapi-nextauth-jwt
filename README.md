@@ -36,7 +36,7 @@ from fastapi_nextauth_jwt import NextAuthJWT
 app = FastAPI()
 
 JWT = NextAuthJWT(
-    secret="y0uR_SuP3r_s3cr37_$3cr3t", # Leave this out to automatically read the NEXTAUTH_SECRET env var  
+    secret="y0uR_SuP3r_s3cr37_$3cr3t", # Leave this out to automatically read the NEXTAUTH_SECRET env var
 )
 
 @app.get("/")
