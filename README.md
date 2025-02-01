@@ -84,8 +84,6 @@ async def return_jwt_post(jwt: Annotated[dict, Depends(JWT)]):
 > ```python
 > JWT = NextAuthJWT(
 >     secret=os.environ["AUTHJS_SECRET"],
->     cookie_name="__Secure-authjs.session-token",
->     csrf_cookie_name="__Host-authjs.csrf-token",
 > )
 > ```
 
