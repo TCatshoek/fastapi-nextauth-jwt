@@ -50,7 +50,10 @@ async def return_jwt(jwt: Annotated[dict, Depends(JWT)]):
   JWT = NextAuthJWT(secret=os.getenv("YOUR_SECRET_ENV_VAR_NAME")))
   ```
 
-### Security Options
+### Additional Options
+If your auth.js settings are left at their defaults, you shouldn't need to touch these.
+
+#### Security Options
 
 - **csrf_prevention_enabled** (bool): Enable CSRF protection
   - Defaults to `False` in development (`ENV=dev`), `True` otherwise
@@ -58,7 +61,7 @@ async def return_jwt(jwt: Annotated[dict, Depends(JWT)]):
 - **csrf_methods** (Set[str]): HTTP methods requiring CSRF protection
   - Default: `{'POST', 'PUT', 'PATCH', 'DELETE'}`
 
-### Cookie Configuration
+#### Cookie Configuration
 
 - **secure_cookie** (bool): Enable secure cookie attributes
   - Default: `True` (when `NEXTAUTH_URL` starts with https)
@@ -79,7 +82,7 @@ async def return_jwt(jwt: Annotated[dict, Depends(JWT)]):
 > )
 > ```
 
-### Advanced Options
+#### Advanced Options
 
 - **encryption_algorithm** (str): JWT encryption algorithm
   - Supported: `"A256CBC-HS512"` (default), `"A256GCM"`
