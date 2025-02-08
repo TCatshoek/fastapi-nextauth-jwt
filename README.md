@@ -101,7 +101,7 @@ JWT = NextAuthJWTv4(
 
 This provides compatibility with the v4 token format and default settings
 
-## Security Best Practices
+## Best Practices
 
 1. **Environment Variables**: Always use environment variables for sensitive values:
    ```python
