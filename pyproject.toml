@@ -12,7 +12,7 @@ dynamic = ["version", "description"]
 dependencies = [
     "fastapi",
     "cryptography",
-    "python-jose[cryptography]"
+    "python-jose[cryptography] >=3.4"
 ]
 
 [project.optional-dependencies]
