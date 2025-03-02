@@ -53,7 +53,7 @@ def check_expiry(exp: int, cur_time: int = None):
         logger.warning(f"Token expired {abs(time_remaining):.1f} seconds ago")
         raise TokenExpiredException(403, f"Token expired {abs(time_remaining):.1f} seconds ago")
     
-    if time_remaining < 300:  # 5分以内に期限切れ
+    if time_remaining < 300:  # 5 minutes
         logger.warning(f"Token will expire soon. {time_remaining:.1f} seconds remaining")
     else:
         logger.info(f"Token is valid. {time_remaining:.1f} seconds remaining")
