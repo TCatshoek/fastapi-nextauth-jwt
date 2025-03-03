@@ -42,13 +42,13 @@ class NextAuthJWT:
         Initializes a new instance of the NextAuthJWT class.
 
         Args:
-            secret (str): The secret used for key derivation. If not set, will be obtained from NEXTAUTH_SECRET env var.
+            secret (str): The secret used for key derivation. If not set, will be obtained from AUTH_SECRET env var.
 
             cookie_name (str, optional): The name of the session cookie. Defaults to "__Secure-next-auth.session-token"
              if using secure cookies, otherwise "next-auth.session-token"
 
             secure_cookie (bool, optional): Indicates if the session cookie is a secure cookie. Defaults to True
-             if NEXTAUTH_URL starts with https://. else False.
+             if AUTH_URL starts with https://. else False.
 
             csrf_cookie_name (str, optional): The name of the CSRF token cookie. Defaults to
              "__Host-next-auth.csrf-token" if using secure cookies, else "next-auth.csrf-token".
@@ -67,22 +67,22 @@ class NextAuthJWT:
              check_expiry (bool, optional): Whether or not to check the token for expiry. Defaults to True
 
         Example:
-            >>> auth = NextAuthJWT(secret=os.getenv("NEXTAUTH_SECRET"))
+            >>> auth = NextAuthJWT(secret=os.getenv("AUTH_SECRET"))
         """
 
         if secret is not None:
             self.secret = secret
         else:
-            env_secret = os.getenv("NEXTAUTH_SECRET")
+            env_secret = os.getenv("AUTH_SECRET")
             if env_secret is None:
                 raise ValueError("Secret not set")
             self.secret = env_secret
 
         if secure_cookie is None:
-            nextauth_url = os.getenv("NEXTAUTH_URL")
-            if nextauth_url is None:
-                warnings.warn("NEXTAUTH_URL not set", RuntimeWarning)
-            secure_cookie = os.getenv("NEXTAUTH_URL", "").startswith("https://")
+            auth_url = os.getenv("AUTH_URL")
+            if auth_url is None:
+                warnings.warn("AUTH_URL not set", RuntimeWarning)
+            secure_cookie = os.getenv("AUTH_URL", "").startswith("https://")
 
         if cookie_name is None:
             self.cookie_name = "__Secure-authjs.session-token" if secure_cookie else "authjs.session-token"
@@ -176,9 +176,9 @@ NextAuthJWTv4 = partial(
     auto_append_salt=False,
     encryption_algorithm="A256GCM",
     cookie_name="__Secure-next-auth.session-token"\
-        if os.getenv("NEXTAUTH_URL", "").startswith("https://")\
+        if os.getenv("AUTH_URL", "").startswith("https://")\
         else "next-auth.session-token",
     csrf_cookie_name="__Host-next-auth.csrf-token"\
-        if os.getenv("NEXTAUTH_URL", "").startswith("https://")\
+        if os.getenv("AUTH_URL", "").startswith("https://")\
         else "next-auth.csrf-token"
 )
