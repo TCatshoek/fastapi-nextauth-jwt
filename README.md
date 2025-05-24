@@ -33,7 +33,7 @@ from fastapi_nextauth_jwt import NextAuthJWT
 app = FastAPI()
 
 JWT = NextAuthJWT(
-    secret="y0uR_SuP3r_s3cr37_$3cr3t", # Leave this out to automatically read the NEXTAUTH_SECRET env var
+    secret="y0uR_SuP3r_s3cr37_$3cr3t", # Leave this out to automatically read the AUTH_SECRET env var
 )
 
 @app.get("/")
@@ -45,7 +45,7 @@ async def return_jwt(jwt: Annotated[dict, Depends(JWT)]):
 
 ### Essential Settings
 
-- **secret** (str): The secret key used for JWT operations. Should match `NEXTAUTH_SECRET` in your Next.js app. Leave this out to automatically read the `NEXTAUTH_SECRET` environment variable.
+- **secret** (str): The secret key used for JWT operations. Should match `AUTH_SECRET` in your Next.js app. Leave this out to automatically read the `AUTH_SECRET` environment variable.
   ```python
   JWT = NextAuthJWT(secret=os.getenv("YOUR_SECRET_ENV_VAR_NAME")))
   ```
@@ -64,7 +64,7 @@ If your auth.js settings are left at their defaults, you shouldn't need to touch
 #### Cookie Configuration
 
 - **secure_cookie** (bool): Enable secure cookie attributes
-  - Default: `True` (when `NEXTAUTH_URL` starts with https)
+  - Default: `True` (when `AUTH_URL` starts with https)
 
 - **cookie_name** (str): Session token cookie name
   - Default: `"__Secure-authjs.session-token"` (when secure_cookie is True)
@@ -78,7 +78,7 @@ If your auth.js settings are left at their defaults, you shouldn't need to touch
 > If you're using the latest version of Auth.js, here's the recommended configuration:
 > ```python
 > JWT = NextAuthJWT(
->     secret=os.environ["AUTHJS_SECRET"],
+>     secret=os.environ["AUTH_SECRET"],
 > )
 > ```
 
@@ -98,7 +98,7 @@ For NextAuth.js v4 applications, use the `NextAuthJWTv4` class:
 from fastapi_nextauth_jwt import NextAuthJWTv4
 
 JWT = NextAuthJWTv4(
-    secret=os.getenv("NEXTAUTH_SECRET")
+    secret=os.getenv("AUTH_SECRET")
 )
 ```
 
@@ -109,11 +109,11 @@ This provides compatibility with the v4 token format and default settings
 1. **Environment Variables**: Always use environment variables for sensitive values:
    ```python
    JWT = NextAuthJWT(
-       secret=os.getenv("NEXTAUTH_SECRET"),
+       secret=os.getenv("AUTH_SECRET"),
    )
    ```
 
-2. **HTTPS in Production**: Ensure `NEXTAUTH_URL` starts with `https://` in production to enable secure cookies
+2. **HTTPS in Production**: Ensure `AUTH_URL` starts with `https://` in production to enable secure cookies
 
 3. **CSRF Protection**: Keep CSRF protection enabled in production environments
 
@@ -128,6 +128,6 @@ You can also place both the backend and frontend behind a reverse proxy like ngi
 
 ## Environment Variables
 
-- `NEXTAUTH_SECRET`: The secret key used for JWT operations (required)
-- `NEXTAUTH_URL`: The URL of your application (affects secure cookie settings)
+- `AUTH_SECRET`: The secret key used for JWT operations (required)
+- `AUTH_URL`: The URL of your application (affects secure cookie settings)
 - `ENV`: Set to `"dev"` to disable CSRF protection in development

@@ -11,14 +11,14 @@ def test_obtain_secret_from_argument():
 
 def test_obtain_secret_from_env(monkeypatch):
     secret = "foo"
-    monkeypatch.setenv("NEXTAUTH_SECRET", secret)
+    monkeypatch.setenv("AUTH_SECRET", secret)
     JWT = NextAuthJWT()
     assert JWT.secret == secret
 
 
 def test_obtain_secret_precedence(monkeypatch):
     secret1 = "foo"
-    monkeypatch.setenv("NEXTAUTH_SECRET", secret1)
+    monkeypatch.setenv("AUTH_SECRET", secret1)
 
     secret2 = "bar"
 
