@@ -74,13 +74,6 @@ If your auth.js settings are left at their defaults, you shouldn't need to touch
   - Default: `"__Host-authjs.csrf-token"` (when secure_cookie is True)
   - Default: `"authjs.csrf-token"` (when secure_cookie is False)
 
-> [!TIP]
-> If you're using the latest version of Auth.js, here's the recommended configuration:
-> ```python
-> JWT = NextAuthJWT(
->     secret=os.environ["AUTH_SECRET"],
-> )
-> ```
 
 #### Advanced Options
 
