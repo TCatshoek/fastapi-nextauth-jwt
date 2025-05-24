@@ -75,14 +75,20 @@ class NextAuthJWT:
         else:
             env_secret = os.getenv("AUTH_SECRET")
             if env_secret is None:
-                raise ValueError("Secret not set")
+                if env_secret := os.getenv("NEXTAUTH_SECRET"):
+                    warnings.warn("'NEXTAUTH_SECRET' is deprecated; use 'AUTH_SECRET' instead", DeprecationWarning)
+                else:
+                    raise ValueError("Secret not set")
             self.secret = env_secret
 
         if secure_cookie is None:
             auth_url = os.getenv("AUTH_URL")
             if auth_url is None:
-                warnings.warn("AUTH_URL not set", RuntimeWarning)
-            secure_cookie = os.getenv("AUTH_URL", "").startswith("https://")
+                if auth_url := os.getenv("NEXTAUTH_URL"):
+                    warnings.warn("'NEXTAUTH_URL' is deprecated; use 'AUTH_URL' instead", DeprecationWarning)
+                else:
+                    warnings.warn("AUTH_URL not set", RuntimeWarning)
+            secure_cookie = (auth_url or "").startswith("https://")
 
         if cookie_name is None:
             self.cookie_name = "__Secure-authjs.session-token" if secure_cookie else "authjs.session-token"
